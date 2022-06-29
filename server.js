@@ -81,4 +81,4 @@ app.post("/get-more-data", (req,res) => {
   }).skip(commentIncrement).limit(10)
 })
 
-app.listen(5000 || process.env.PORT, () => console.log("server runs on port 5000"));
+app.listen(process.env.PORT || 5000, () => console.log("server runs on port 5000"));
