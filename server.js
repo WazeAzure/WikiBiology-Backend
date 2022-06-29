@@ -2,7 +2,6 @@ const express = require('express');
 const mongoose = require("mongoose");
 const path = require('path');
 const router = express.Router();
-const cors = require('cors');
 // "mongodb://localhost:27017/WikiBiologyComment"
 //mongodb://admin:admin@ac-xcb6fsi-shard-00-00.vmnjmd8.mongodb.net:27017,ac-xcb6fsi-shard-00-01.vmnjmd8.mongodb.net:27017,ac-xcb6fsi-shard-00-02.vmnjmd8.mongodb.net:27017/WikiBiologyComment?ssl=true&replicaSet=atlas-1dao57-shard-0&authSource=admin&retryWrites=true&w=majority
 const db_temp = process.env.MONGODB_URL;
@@ -35,7 +34,6 @@ app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
-app.use(cors());
 // Handle routes
 
 app.use(express.static((path.join(__dirname + "/build"))))
