@@ -3,7 +3,9 @@ const mongoose = require("mongoose");
 const path = require('path');
 const router = express.Router();
 // "mongodb://localhost:27017/WikiBiologyComment"
-mongoose.connect(process.env.MONGODB_URL, {useNewUrlParser: true, useUnifiedTopology: true});
+const db_temp = "mongodb://admin:admin@ac-xcb6fsi-shard-00-00.vmnjmd8.mongodb.net:27017,ac-xcb6fsi-shard-00-01.vmnjmd8.mongodb.net:27017,ac-xcb6fsi-shard-00-02.vmnjmd8.mongodb.net:27017/WikiBiologyComment?ssl=true&replicaSet=atlas-1dao57-shard-0&authSource=admin&retryWrites=true&w=majority"
+mongoose.connect(db_temp, {useNewUrlParser: true, useUnifiedTopology: true});
+console.log(db_temp);
 const db = mongoose.connection;
 db.on("error", error => {
   console.log(error);
