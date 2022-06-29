@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require("mongoose");
 const path = require('path');
 const router = express.Router();
+const cors = require('cors');
 
 const db_temp = process.env.MONGODB_URL;
 mongoose.connect(db_temp, {useNewUrlParser: true, useUnifiedTopology: true});
@@ -37,6 +38,10 @@ app.use(express.urlencoded({
 
 app.use(express.static((path.join(__dirname + "/build"))))
 app.use(express.static('build/static'))
+
+app.use(cors({
+    origin: '*'
+}));
 
 // Get document from the collection. LImited by the data sent in the POST request
 app.get("/", (req, res) => {
