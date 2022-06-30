@@ -4,7 +4,7 @@ const path = require('path');
 const router = express.Router();
 const cors = require('cors');
 
-const db_temp = process.env.MONGODB_URL;
+const db_temp = process.env.MONGODB_URL || "mongodb://admin:admin@ac-xcb6fsi-shard-00-00.vmnjmd8.mongodb.net:27017,ac-xcb6fsi-shard-00-01.vmnjmd8.mongodb.net:27017,ac-xcb6fsi-shard-00-02.vmnjmd8.mongodb.net:27017/WikiBiologyComment?ssl=true&replicaSet=atlas-1dao57-shard-0&authSource=admin&retryWrites=true&w=majority";
 mongoose.connect(db_temp, {useNewUrlParser: true, useUnifiedTopology: true});
 console.log(db_temp);
 const db = mongoose.connection;
@@ -27,7 +27,14 @@ const CommentSchema = mongoose.Schema({
   }]
 });
 
+const AccountSchema = mongoose.Schema({
+  username: String,
+  email: String,
+  password: String
+});
+
 const CommentsModel = mongoose.model("Comment", CommentSchema);
+const AccountsModel = mongoose.model("Account", AccountSchema);
 
 const app = express();
 app.use(express.json());
@@ -84,6 +91,14 @@ app.post("/get-more-data", (req,res) => {
       res.send(data)
     }
   }).skip(commentIncrement).limit(10)
+})
+
+// Account auth
+app.post("/post-login", (req, res) => {
+  console.log(req.body);
+  AccountsModel.find({}, (err, data) => {
+    console.log(data);
+  });
 })
 
 app.listen(process.env.PORT || 5000, () => console.log("server runs on port 5000"));
