@@ -96,8 +96,12 @@ app.post("/get-more-data", (req,res) => {
 // Account auth
 app.post("/post-login", (req, res) => {
   console.log(req.body);
-  AccountsModel.find({}, (err, data) => {
-    console.log(data);
+  AccountsModel.find({email: req.body.email, password: req.body.password}, (err, data) => {
+    if(data.length === 0){
+      res.send({status: 0});
+    } else {
+      res.send({status: 1, user: data[0].username});
+    }
   });
 })
 
