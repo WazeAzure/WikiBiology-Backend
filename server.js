@@ -69,8 +69,12 @@ app.post("/get-data", (req, res) => {
 // user create new comment from top comment box
 app.post("/new-comment", (req, res) => {
   let messageData = req.body.messageData;
+  let user = "Anonym";
+  if(req.body.user != ('' || "" || null)){
+    user = req.body.user;
+  }
   const newMessage = new CommentsModel({
-    user: "Super user",
+    user: user,
     message: messageData,
     likes: 0,
     editable: true,
@@ -103,6 +107,29 @@ app.post("/post-login", (req, res) => {
       res.send({status: 1, user: data[0].username});
     }
   });
+})
+
+app.post("/signup", (req, res) => {
+  console.log(req.body);
+  AccountsModel.find({$or: [{email: req.body.email}, {username: req.body.username}]}, (err, data) => {
+    if(data.length === 0){
+      const newAccount = new AccountsModel({
+        username: req.body.username,
+        email: req.body.email,
+        password: req.body.password
+      }).save();
+
+      res.send({status: 1, message: "Sign up succeed!"});
+    }else {
+      if(data[0].username == req.body.username){
+        res.send({status: 3, message: "Username is already taken! Please use another username."})
+      } else {
+        res.send({status: 4, message: "Email is already taken! Please use another email."})
+      }
+    }
+  })
+
+
 })
 
 app.listen(process.env.PORT || 5000, () => console.log("server runs on port 5000"));
